@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Life Clock</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    body {
+      background-color: black;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 100vh;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+
+    .clock {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      font-size: 2rem;
+    }
+
+    .time-unit {
+      background-color: #111;
+      border: 2px solid white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      min-width: 100px;
+    }
+
+    .label {
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      color: #bbb;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+      }
+
+      .clock {
+        font-size: 1.1rem;
+        gap: 0.5rem;
+      }
+
+      .time-unit {
+        padding: 1rem;
+        min-width: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Onkar Gavde</h1>
+  <div class="subtitle"> Birth Date: <strong>19 Nov 2005</strong></div>
+  <div class="clock" id="clock"></div>
+
+  <script>
+    // Replace with your actual name and birthdate if needed
+    const birthDate = new Date('2005-11-19T00:00:00');
+
+    function updateClock() {
+      const now = new Date();
+      let years = now.getFullYear() - birthDate.getFullYear();
+      let months = now.getMonth() - birthDate.getMonth();
+      let days = now.getDate() - birthDate.getDate();
+
+      if (days < 0) {
+        months--;
+        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const clock = document.getElementById('clock');
+      clock.innerHTML = `
+        ${createUnit(years, 'Years')}
+        ${createUnit(months, 'Months')}
+        ${createUnit(days, 'Days')}
+        ${createUnit(hours, 'Hours')}
+        ${createUnit(minutes, 'Minutes')}
+        ${createUnit(seconds, 'Seconds')}
+      `;
+    }
+
+    function createUnit(value, label) {
+      return `
+        <div class="time-unit">
+          ${String(value).padStart(2, '0')}
+          <div class="label">${label}</div>
+        </div>
+      `;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
